@@ -35,18 +35,17 @@ Task { @MainActor in
 }
 ```
 
-You can of course also save arrays with Codable objects in a similar way.
+You can also save arrays with Codable objects in a similar way.
 
 ```
 Task { @MainActor in
     let storage = CodableStorage.default
     do {
         // save
-        try await storage.setCodable([Person(name: "John", age: 35), Person(name: "Kate", age: 30)], forKey: "people")
-        
+        let array = [Person(name: "John", age: 35), Person(name: "Kate", age: 30)]
+        try await storage.setCodable(array, forKey: "people")
         // read
         let people = try await storage.codable(forKey: "people", type: [Person].self)
-        
         // remove
         try await storage.setCodable(nil, forKey: "people")
     } catch {
