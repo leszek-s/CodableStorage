@@ -170,7 +170,7 @@ public final class CodableStorage {
     ///   - key: The key used to store codable.
     ///   - type: The codable type which should be used for decoding.
     /// - Returns: Codable with given type stored with given key.
-    @available(iOS 13.0, *)
+    @available(macOS 10.15, iOS 13.0, *)
     public func codable<T: Codable>(forKey key: String, type: T.Type) async throws -> T? {
         return try await withCheckedThrowingContinuation { continuation in
             codable(forKey: key, type: type) { codable, error in
@@ -187,7 +187,7 @@ public final class CodableStorage {
     /// - Parameters:
     ///   - codable: The codable to store.
     ///   - key: The key used to store codable.
-    @available(iOS 13.0, *)
+    @available(macOS 10.15, iOS 13.0, *)
     public func setCodable(_ codable: Codable?, forKey key: String) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             setCodable(codable, forKey: key) { error in
@@ -204,7 +204,7 @@ public final class CodableStorage {
     /// - Parameters:
     ///   - codable: The codable to store.
     ///   - key: The key used to store codable.
-    @available(iOS 13.0, *)
+    @available(macOS 10.15, iOS 13.0, *)
     public func clear() async throws {
         return try await withCheckedThrowingContinuation { continuation in
             clear() { error in

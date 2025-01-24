@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "CodableStorage",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v12),
+        .macOS(.v12)
     ],
     products: [
         .library(
