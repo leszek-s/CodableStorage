@@ -55,7 +55,7 @@ Task { @MainActor in
 }
 ```
 
-It is also possible to use non async methods with completion blocks instead if you need to support iOS 12 and can't use Task.
+It is also possible to use methods with completion blocks instead if you need to support iOS 12 and can't use Task.
 
 ## License
 
