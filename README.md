@@ -1,3 +1,5 @@
+![Logo](./logo.png)
+
 # CodableStorage
 
 **CodableStorage** is an easy to use key-value storage for objects conforming to Codable protocol backed by CoreData. Both read and save operations are asynchronous and do not block the main thread.
