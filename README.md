@@ -12,7 +12,7 @@ To integrate **CodableStorage** into your Xcode project you can use Swift Packag
 
 Saving, reading and removing data looks like in the example below.
 
-```
+```swift
 struct Person: Codable {
     let name: String
     let age: Int
@@ -37,7 +37,7 @@ Task { @MainActor in
 
 You can also save arrays with Codable objects in a similar way.
 
-```
+```swift
 Task { @MainActor in
     let storage = CodableStorage.default
     do {
