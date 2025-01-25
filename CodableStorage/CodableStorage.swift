@@ -77,7 +77,7 @@ public final class CodableStorage {
     /// - Parameters:
     ///   - key: The key used to store codable.
     ///   - type: The codable type which should be used for decoding.
-    ///   - completion: Completion block.
+    ///   - completion: Completion handler.
     public func codable<T: Codable>(forKey key: String, type: T.Type, completion: @escaping (T?, Error?) -> Void) {
         guard let managedObjectContext = managedObjectContext else {
             completion(nil, StorageError.initializationFailed)
@@ -108,7 +108,7 @@ public final class CodableStorage {
     /// - Parameters:
     ///   - codable: The codable to store.
     ///   - key: The key used to store codable.
-    ///   - completion: Completion block.
+    ///   - completion: Completion handler.
     public func setCodable(_ codable: Codable?, forKey key: String, completion: @escaping (Error?) -> Void) {
         guard let managedObjectContext = managedObjectContext else {
             completion(StorageError.initializationFailed)
@@ -142,7 +142,7 @@ public final class CodableStorage {
     }
     
     /// Removes all stored data.
-    /// - Parameter completion: Completion block.
+    /// - Parameter completion: Completion handler.
     public func clear(completion: @escaping (Error?) -> Void) {
         guard let managedObjectContext = managedObjectContext else {
             completion(StorageError.initializationFailed)

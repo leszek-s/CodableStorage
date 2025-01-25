@@ -7,7 +7,7 @@ let package = Package(
     name: "CodableStorage",
     platforms: [
         .iOS(.v12),
-        .macOS(.v12)
+        .macOS(.v10_15)
     ],
     products: [
         .library(

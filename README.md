@@ -2,11 +2,11 @@
 
 # CodableStorage
 
-**CodableStorage** is an easy to use key-value storage for objects conforming to Codable protocol backed by CoreData. Both read and save operations are asynchronous and do not block the main thread.
+**CodableStorage** is an easy to use key-value storage for objects conforming to the Codable protocol, backed by Core Data. Both read and save operations are asynchronous and do not block the main thread.
 
 ## Installation
 
-To integrate CodableStorage into your Xcode project you can use Swift Package Manager. Alternatively you can just manually drag and drop this library to your project.
+To integrate **CodableStorage** into your Xcode project you can use Swift Package Manager or CocoaPods. Alternatively you can just manually drag and drop this library to your project.
 
 ## Basic usage
 
@@ -54,7 +54,7 @@ Task { @MainActor in
 }
 ```
 
-It is also possible to use methods with completion blocks instead if you need to support iOS 12 and can't use Task.
+It is also possible to use methods with completion handlers instead if you need to support older system versions and can't use Task.
 
 ## License
 
