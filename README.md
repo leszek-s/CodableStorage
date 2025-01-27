@@ -54,8 +54,8 @@ Task { @MainActor in
 }
 ```
 
-It is also possible to use methods with completion handlers instead if you need to support older system versions and can't use Task.
+You can also get all currently stored keys using `allKeys()` and clear the entire storage using `clear()`. You can also create more `CodableStorage` instances by passing custom URLs to the initializer and then use multiple storages saved in custom locations if needed. You can also use methods with completion handlers if you need to support older system versions and can't use Task.
 
 ## License
 
-CodableStorage is available under the MIT license.
+**CodableStorage** is available under the MIT license.

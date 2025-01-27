@@ -86,13 +86,16 @@ public final class CodableStorage {
         managedObjectContext.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Data")
             fetchRequest.predicate = NSPredicate(format: "key == %@", key)
-            var result: [NSManagedObject]?
             var err: Error?
             var codable: T?
             do {
-                result = try managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
-                if let data = result?.first?.value(forKey: "value") as? Data {
-                    codable = try JSONDecoder().decode(type, from: data)
+                let result = try managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+                if let value = result?.first?.value(forKey: "value") as? Data {
+                    if type == Data.self {
+                        codable = value as? T
+                    } else {
+                        codable = try JSONDecoder().decode(type, from: value)
+                    }
                 }
             } catch {
                 err = error
@@ -117,16 +120,20 @@ public final class CodableStorage {
         managedObjectContext.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Data")
             fetchRequest.predicate = NSPredicate(format: "key == %@", key)
-            var result: [NSManagedObject]?
             var err: Error?
             do {
-                result = try managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+                let result = try managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
                 if let codable = codable {
-                    let data = try JSONEncoder().encode(codable)
+                    var value: Data
+                    if let data = codable as? Data {
+                        value = data
+                    } else {
+                        value = try JSONEncoder().encode(codable)
+                    }
                     result?.forEach({ managedObjectContext.delete($0) })
                     let object = NSEntityDescription.insertNewObject(forEntityName:"Data", into: managedObjectContext)
                     object.setValue(key, forKey: "key")
-                    object.setValue(data, forKey: "value")
+                    object.setValue(value, forKey: "value")
                 } else {
                     result?.forEach({ managedObjectContext.delete($0) })
                 }
@@ -137,6 +144,31 @@ public final class CodableStorage {
             }
             DispatchQueue.main.async {
                 completion(err)
+            }
+        }
+    }
+    
+    /// Retrieves all stored keys.
+    /// - Parameter completion: Completion handler.
+    public func allKeys(completion: @escaping ([String]?, Error?) -> Void) {
+        guard let managedObjectContext = managedObjectContext else {
+            completion(nil, StorageError.initializationFailed)
+            return
+        }
+        managedObjectContext.perform {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Data")
+            fetchRequest.propertiesToFetch = ["key"]
+            var allKeys: [String]?
+            var err: Error?
+            do {
+                let result = try managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+                allKeys = result?.compactMap({ $0.value(forKey: "key") as? String })
+            } catch {
+                err = error
+            }
+
+            DispatchQueue.main.async {
+                completion(allKeys, err)
             }
         }
     }
@@ -195,6 +227,21 @@ public final class CodableStorage {
                     continuation.resume(throwing: error)
                 } else {
                     continuation.resume()
+                }
+            }
+        }
+    }
+    
+    /// Retrieves all stored keys.
+    /// - Returns: All stored keys.
+    @available(macOS 10.15, iOS 13.0, *)
+    public func allKeys() async throws -> [String]? {
+        return try await withCheckedThrowingContinuation { continuation in
+            allKeys { allKeys, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: allKeys)
                 }
             }
         }
